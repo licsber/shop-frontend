@@ -58,19 +58,21 @@ export default {
           tel: this.loginForm.tel,
           password: this.loginForm.password
         })
-        .then(successResponse => {
-          if (successResponse.data.code === 200) {
-            this.$notify.success('登陆成功，欢迎' + successResponse.data.data.nick)
+        .then(res => {
+          if (res.data.code === 200) {
+            this.$store.commit('login', res.data.data)
+            var path = this.$route.query.redirect
+            this.$notify.success('登陆成功，欢迎' + res.data.data.nick)
             setTimeout(() => {
               this.$notify.success('上次登陆时间：' +
-                this.$options.filters.dateFilter(successResponse.data.data.lastLogin))
-              this.$router.replace({path: '/index'})
+                this.$options.filters.dateFilter(res.data.data.lastLogin))
+              this.$router.replace({path: path === undefined ? '/index' : path})
             }, 500)
           } else {
-            this.$notify.warning('登陆失败，信息：' + successResponse.data.message)
+            this.$notify.warning('登陆失败，信息：' + res.data.msg)
           }
         })
-        .catch(failResponse => {
+        .catch(fail => {
           this.$notify.error('后端没启动 别再点了')
         })
     },

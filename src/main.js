@@ -7,6 +7,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import Notifications from 'vue-notification'
 import {dateFilter} from './utils/filters/DateFilter'
+import store from './store'
 
 Vue.filter('dateFilter', dateFilter)
 
@@ -19,10 +20,28 @@ Vue.prototype.$axios = axios
 
 Vue.config.productionTip = false
 
+router.beforeEach(
+  (to, from, next) => {
+    if (to.meta.requireAuth) {
+      if (store.state.user.token) {
+        next()
+      } else {
+        next({
+          path: 'login',
+          query: {redirect: to.fullPath}
+        })
+      }
+    } else {
+      next()
+    }
+  }
+)
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   components: {App},
   template: '<App/>'
 })

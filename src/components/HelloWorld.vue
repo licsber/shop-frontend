@@ -1,85 +1,24 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li>
-        <a
-          href="https://vuejs.org"
-          target="_blank"
-        >
-          Core Docs
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://forum.vuejs.org"
-          target="_blank"
-        >
-          Forum
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://chat.vuejs.org"
-          target="_blank"
-        >
-          Community Chat
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://twitter.com/vuejs"
-          target="_blank"
-        >
-          Twitter
-        </a>
-      </li>
-      <br>
-      <li>
-        <a
-          href="http://vuejs-templates.github.io/webpack/"
-          target="_blank"
-        >
-          Docs for This Template
-        </a>
-      </li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li>
-        <a
-          href="http://router.vuejs.org/"
-          target="_blank"
-        >
-          vue-router
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vuex.vuejs.org/"
-          target="_blank"
-        >
-          vuex
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vue-loader.vuejs.org/"
-          target="_blank"
-        >
-          vue-loader
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/awesome-vue"
-          target="_blank"
-        >
-          awesome-vue
-        </a>
-      </li>
-    </ul>
+    <h2>项目简介：</h2>
+    <h3>由于疫情原因，本来的考试也变成了大作业的形式</h3>
+    <h3>然后我分到的题目是：二手商品交易系统</h3>
+    <h3>于是就有了本系统</h3>
+    <br>
+    <el-button type="success" v-on:click="enter" plain>点这进入商城主页</el-button>
+    <br><br>
+    <h2>题目简介：</h2>
+    <h3>商品发布管理子系统功能要求：</h3>
+    <h4>1． 二手商品的分类管理</h4>
+    <h4>2． 商品入库管理</h4>
+    <h4>3． 商品上架、下架管理</h4>
+    <h3>商品购买子系统功能要求：</h3>
+    <h4>2． 二手商品信息展示</h4>
+    <h4>3． 网上购买及支付管理</h4>
+    <h4>4． 顾客留言</h4>
+    <br>
+    <h5>仅供娱乐 欢迎技术交流 <a href="mailto:licsber@njit.edu.cn">licsber@njit.edu.cn</a></h5>
   </div>
 </template>
 
@@ -88,7 +27,12 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: '欢迎来到家乐的二手商品商城'
+    }
+  },
+  methods: {
+    enter () {
+      this.$router.push('/index')
     }
   }
 }

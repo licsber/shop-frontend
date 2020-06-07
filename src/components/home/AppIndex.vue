@@ -1,5 +1,7 @@
 <template>
   <div>
+    <SideMenu @loadItems="loadItems" ref="sideMenu"></SideMenu>
+    <h2 v-if="items.length === 0">该类别暂无商品</h2>
     <div v-for="(item, i) in items" :key="i">
       <router-link :to="'item/'  + item.id">
         <img :src="item.primaryImg" :alt="item.title" height="300px">
@@ -18,8 +20,11 @@
 </template>
 
 <script>
+import SideMenu from '../common/SideMenu'
+
 export default {
   name: 'AppIndex',
+  components: {SideMenu},
   data () {
     return {
       'items': []
@@ -30,11 +35,15 @@ export default {
   },
   methods: {
     loadItems () {
-      this.$axios.get('/indexItem')
+      this.$axios.get('/category/' + this.$refs.sideMenu.index)
         .then(res => {
-          if (res.data && res.data.code === 200) {
-            console.log(res.data)
-            this.items = res.data.data
+          console.log(res.data)
+          if (res.data) {
+            if (res.data.code === 200) {
+              this.items = res.data.data
+            } else {
+              this.$notify.error(res.data.msg)
+            }
           }
         })
         .catch(fail => {

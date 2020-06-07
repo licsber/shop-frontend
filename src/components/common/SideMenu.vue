@@ -9,29 +9,9 @@
         <i class="el-icon-menu"></i>
         <span slot="title">全部</span>
       </el-menu-item>
-      <el-menu-item index="1">
-        <i class="el-icon-menu"></i>
-        <span slot="title">文学</span>
-      </el-menu-item>
-      <el-menu-item index="2">
-        <i class="el-icon-menu"></i>
-        <span slot="title">流行</span>
-      </el-menu-item>
-      <el-menu-item index="3">
-        <i class="el-icon-menu"></i>
-        <span slot="title">文化</span>
-      </el-menu-item>
-      <el-menu-item index="4">
-        <i class="el-icon-menu"></i>
-        <span slot="title">生活</span>
-      </el-menu-item>
-      <el-menu-item index="5">
-        <i class="el-icon-menu"></i>
-        <span slot="title">经管</span>
-      </el-menu-item>
-      <el-menu-item index="6">
-        <i class="el-icon-menu"></i>
-        <span slot="title">科技</span>
+      <el-menu-item v-for="category in categories" :key="category.id" :index="category.id.toString()">
+        <i class="el-icon-goods"></i>
+        <span slot="title">{{ category.name }}</span>
       </el-menu-item>
     </el-menu>
   </div>
@@ -39,7 +19,38 @@
 
 <script>
 export default {
-  name: 'SideMenu'
+  name: 'SideMenu',
+  data () {
+    return {
+      categories: {},
+      index: 0
+    }
+  },
+  mounted () {
+    this.getAllCategories()
+  },
+  methods: {
+    handleSelect (index) {
+      this.index = index
+      this.$emit('loadItems')
+    },
+    getAllCategories () {
+      this.$axios.get('/categories')
+        .then(res => {
+          console.log(res.data)
+          if (res.data) {
+            if (res.data.code === 200) {
+              this.categories = res.data.data
+            } else {
+              this.$notify.error(res.data.msg)
+            }
+          }
+        })
+        .catch(fail => {
+          this.$notify.error('后端接口请求失败，请刷新重试')
+        })
+    }
+  }
 }
 </script>
 
@@ -47,7 +58,7 @@ export default {
   .categories {
     position: fixed;
     margin-left: 50%;
-    left: -600px;
+    left: -700px;
     top: 100px;
     width: 150px;
   }

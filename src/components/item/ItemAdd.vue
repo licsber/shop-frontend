@@ -10,8 +10,8 @@
       <el-row>
 
         <el-col :span="12">
-          <el-form-item label="分类" :label-width="formLabelWidth" prop="cName">
-            <el-select v-model="addForm.cName" placeholder="请选择分类">
+          <el-form-item label="分类" :label-width="formLabelWidth" prop="categoryName">
+            <el-select v-model="addForm.categoryName" placeholder="请选择分类">
               <el-option v-for="category in categories"
                          :key="category.id" :value="category.name">{{ category.name }}
               </el-option>
@@ -95,7 +95,7 @@ export default {
       dialogFormVisible: true,
       addForm: {
         title: '',
-        cName: '',
+        categoryName: '',
         type: '',
         subtitle: '',
         price: '',
@@ -113,7 +113,7 @@ export default {
           {required: true, message: '请输入商品主标题', trigger: 'blur'},
           {min: 3, max: 32, message: '长度在 3 到 32 个字符', trigger: 'blur'}
         ],
-        cName: [
+        categoryName: [
           {required: true, message: '请选择商品类别', trigger: 'blur'}
         ],
         type: [
@@ -157,12 +157,32 @@ export default {
         imgUrls: [],
         info: '',
         type: '',
-        cName: '',
+        categoryName: '',
         userToken: this.$store.state.user.token
       }
     },
     onSubmit () {
       console.log(this.addForm)
+      this.$axios.post('/itemAdd',
+        {
+          title: this.addForm.title,
+          subtitle: this.addForm.subtitle,
+          price: this.addForm.price,
+          originPrice: this.addForm.originPrice,
+          postage: this.addForm.postage,
+          primaryImg: this.addForm.primaryImg,
+          imgUrls: this.addForm.imgUrls,
+          info: this.addForm.info,
+          type: this.addForm.type,
+          categoryName: this.addForm.categoryName,
+          userToken: this.addForm.userToken
+        }
+      ).then(res => {
+        this.$notify.info(res.data.msg)
+        console.log(res.data)
+      }).catch(fail => {
+        this.$notify.error('后端没启动 别再点了')
+      })
     }
   }
 }

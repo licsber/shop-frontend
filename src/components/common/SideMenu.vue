@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import utils from '../../utils/GetAllCategories'
+
 export default {
   name: 'SideMenu',
   data () {
@@ -34,20 +36,10 @@ export default {
       this.index = index
       this.$emit('loadItems')
     },
-    getAllCategories () {
-      this.$axios.get('/categories')
-        .then(res => {
-          console.log(res.data)
-          if (res.data) {
-            if (res.data.code === 200) {
-              this.categories = res.data.data
-            } else {
-              this.$notify.error(res.data.msg)
-            }
-          }
-        })
+    async getAllCategories () {
+      this.categories = await utils.getAllCategories()
         .catch(fail => {
-          this.$notify.error('后端接口请求失败，请刷新重试')
+          this.$notify.error(fail.toString())
         })
     }
   }

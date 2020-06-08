@@ -1,25 +1,22 @@
 <template>
   <el-upload
-    class="img-upload"
+    class="mul-img-upload"
     ref="upload"
     action="http://localhost:8888/api/v1/imgUpload"
-    :on-preview="handlePreview"
     :on-remove="handleRemove"
     :before-remove="beforeRemove"
     :on-success="handleSuccess"
     multiple
-    :limit="1"
-    list-type="picture"
-    :on-exceed="handleExceed"
-    :file-list="fileList">
-    <el-button size="small" type="info" plain>点击上传</el-button>
-    <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过4MB</div>
+    :limit="4"
+    list-type="picture-card"
+    :on-exceed="handleExceed">
+    <el-button size="small" type="primary" round>点击上传</el-button>
   </el-upload>
 </template>
 
 <script>
 export default {
-  name: 'ImgUpload',
+  name: 'MulImgUpload',
   data () {
     return {
       fileList: [],
@@ -27,20 +24,26 @@ export default {
     }
   },
   methods: {
-    handleRemove (file, fileList) {
+    parseFileList (fileList) {
+      this.fileList = []
+      for (var i = 0; i < fileList.length; i++) {
+        this.fileList.push(fileList[i].response.data)
+      }
+      console.log(this.fileList)
     },
-    handlePreview (file) {
+    handleRemove (file, fileList) {
+      this.parseFileList(fileList)
     },
     handleExceed (files, fileList) {
-      this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+      this.$message.warning(`当前限制选择 4 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
     },
     beforeRemove (file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`)
     },
-    handleSuccess (response) {
-      console.log(response)
+    handleSuccess (response, _, fileList) {
       if (response.code === 200) {
         this.url = response.data
+        this.parseFileList(fileList)
         this.$emit('onUpload')
         this.$notify.success('上传成功')
       }

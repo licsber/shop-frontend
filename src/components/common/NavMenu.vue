@@ -10,7 +10,7 @@
     <el-menu-item v-for="(item,i) in navList" :key="i" :index="item.name">
       {{ item.navItem }}
     </el-menu-item>
-    <a href="#" v-on:click="more" style="color: #222; float: right; padding: 20px;">更多功能敬请期待</a>
+    <el-button type="plain" v-on:click="more" style="color: #222; float: right; padding: 20px;">更多功能敬请期待</el-button>
     <el-submenu style="float:right;color: #222;" v-if="nick" index="/index">
       <template slot="title"><span style="font-size: 16px">欢迎您 {{ nick }}</span></template>
       <el-menu-item index="/login" v-on:click="logout">退出登陆</el-menu-item>
@@ -31,11 +31,16 @@ export default {
         {name: '/itemManager', navItem: '商品管理'},
         {name: '/userManager', navItem: '个人中心'}
       ],
-      nick: this.$store.state.user.nick
+      nick: this.$store.state.user.nick,
+      count: 0
     }
   },
   methods: {
     more () {
+      this.count += 1
+      if (this.count === 5) {
+        this.$router.replace('/admin')
+      }
       this.$message.info('开发中，敬请期待')
     },
     logout () {

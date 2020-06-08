@@ -8,6 +8,7 @@ import Home from '@/components/Home'
 import UserManager from '@/components/user/UserManager'
 import ItemManager from '@/components/item/ItemManager'
 import ItemShow from '@/components/item/ItemShow'
+import Admin from '@/components/admin/Admin'
 
 Vue.use(Router)
 
@@ -64,6 +65,11 @@ export default new Router({
       path: '/item/:id',
       name: 'Item',
       component: ItemShow
+    },
+    {
+      path: '/admin',
+      name: 'Admin',
+      component: Admin
     }
   ]
 })

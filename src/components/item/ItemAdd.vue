@@ -2,6 +2,8 @@
   <div style="padding: 20px">
     <el-form :model="addForm" style="text-align: left; width: 700px; display: inline-block" ref="addForm"
              :rules="rules">
+      <div>注意：商品发布期间如果账号被别人登陆，将会重新跳转到登陆界面，您可能丢失已填表单内容！</div>
+      <br>
       <el-form-item label="商品标题" :label-width="formLabelWidth" prop="title">
         <el-input v-model="addForm.title" autocomplete="off" placeholder="用于商品展示"
                   maxlength="32" show-word-limit></el-input>
@@ -178,10 +180,18 @@ export default {
           userToken: this.addForm.userToken
         }
       ).then(res => {
+        if (res.data.code === 401) {
+          this.$notify.info(res.data.msg)
+          this.$router.replace('/login?redirect=/itemAdd')
+          return
+        }
         this.$notify.info(res.data.msg)
         console.log(res.data)
+        if (res.data.code === 200) {
+          this.$router.replace('/item/' + res.data.data)
+        }
       }).catch(fail => {
-        this.$notify.error('后端没启动 别再点了')
+        this.$notify.error('后端炸了 别点了')
       })
     }
   }

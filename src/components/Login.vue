@@ -66,8 +66,8 @@ export default {
             setTimeout(() => {
               this.$notify.success('上次登陆时间：' +
                 this.$options.filters.dateFilter(res.data.data.lastLogin))
-              this.$router.replace({path: path === undefined ? '/index' : path})
             }, 500)
+            this.$router.replace(path === undefined ? '/index' : path)
           } else {
             this.$notify.warning('登陆失败，信息：' + res.data.msg)
           }

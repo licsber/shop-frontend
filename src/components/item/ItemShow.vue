@@ -73,7 +73,19 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="留言板" name="comment">
-          这里有留言板{{ item }}
+          <div v-for="comment in comments" :key="comment.id">
+            <el-card shadow="hover">
+              {{ comment.userNick }}说：{{ comment.msg }}
+            </el-card>
+            <br>
+          </div>
+          <el-form>
+            <el-form-item label="发表评论" prop="comment">
+              <el-input v-model="comment" autocomplete="off" placeholder="文明评论 从你我做起"
+                        maxlength="32" show-word-limit></el-input>
+              <el-button type="primary" style="float:left;" v-on:click="submitComment">发布</el-button>
+            </el-form-item>
+          </el-form>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -106,13 +118,58 @@ export default {
         maskHeight: 100,
         maskColor: 'orange',
         maskOpacity: 0.2
-      }
+      },
+      comments: {},
+      comment: ''
     }
   },
   mounted () {
     this.getItemInfo()
+    this.getComments()
   },
   methods: {
+    submitComment () {
+      this.$axios.post('/comment',
+        {
+          itemId: this.id,
+          msg: this.comment
+        },
+        {
+          headers: {userToken: this.$store.state.user.token}
+        }
+      )
+        .then(res => {
+          console.log(res.data)
+          if (res.data) {
+            if (res.data.code === 200) {
+              this.$notify.info(res.data.msg)
+              this.getComments()
+              this.comment = ''
+            } else {
+              this.$notify.error(res.data.msg)
+            }
+          }
+        })
+        .catch(fail => {
+          this.$notify.error('用户登陆身份已过期')
+        })
+    },
+    getComments () {
+      this.$axios.get('/comments/' + this.id)
+        .then(res => {
+          console.log(res.data)
+          if (res.data) {
+            if (res.data.code === 200) {
+              this.comments = res.data.data
+            } else {
+              this.$notify.error(res.data.msg)
+            }
+          }
+        })
+        .catch(fail => {
+          this.$notify.error('后端接口请求失败，请刷新重试')
+        })
+    },
     replace_img (info) {
       if (!info) {
         return

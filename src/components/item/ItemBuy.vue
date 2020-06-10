@@ -1,5 +1,5 @@
 <template>
-  <div>ItemBug</div>
+  <div>ItemBuy</div>
 </template>
 
 <script>

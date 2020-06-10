@@ -67,7 +67,7 @@
 
       <el-form-item label="商品详情" :label-width="formLabelWidth" prop="info">
         <el-input type="textarea" v-model="addForm.info" autosize maxlength="600"
-                  autocomplete="off" placeholder="支持markdown形式的图片"></el-input>
+                  autocomplete="off" placeholder="支持markdown形式的图片 ![](url)"></el-input>
       </el-form-item>
 
     </el-form>

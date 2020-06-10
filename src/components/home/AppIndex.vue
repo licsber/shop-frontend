@@ -3,6 +3,15 @@
     <SideMenu @loadItems="loadItems" ref="sideMenu"></SideMenu>
     <h2 v-if="items.length === 0">该类别暂无商品</h2>
     <el-main>
+      <el-carousel :interval="4000" type="card" height="300px" style="margin-left: 300px">
+        <el-carousel-item v-for="item in
+        items.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+                          :key="item.id" style="width: 300px">
+          <router-link :to="'item/'  + item.id">
+            <img :src="item.primaryImg" :alt="item.title" height="300px">
+          </router-link>
+        </el-carousel-item>
+      </el-carousel>
       <div id="items_div">
         <div class="item_div" v-for="(item, i) in items.slice((currentPage-1)*pageSize,currentPage*pageSize)" :key="i">
           <router-link :to="'item/'  + item.id">

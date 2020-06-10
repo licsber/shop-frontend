@@ -47,7 +47,11 @@
         </div>
 
         <el-divider></el-divider>
-        <el-button v-on:click="buy" style="display: block" icon="el-icon-check" type="primary" round>立即购买</el-button>
+        <el-button v-on:click="buy" style="display: block" icon="el-icon-check" type="primary" round
+                   v-if="item.state === 1">立即购买
+        </el-button>
+        <el-button type="primary" disabled v-if="item.state === 2">商品已卖出</el-button>
+        <el-button type="primary" disabled v-if="item.state === 0">商品被下架</el-button>
 
       </div>
 
@@ -205,6 +209,13 @@ export default {
           if (res.data) {
             if (res.data.code === 200) {
               this.item = res.data.data
+              if (this.item.state === 3) {
+                this.item = {}
+                this.item.data = {}
+                this.item.user = {}
+                this.item.title = '此商品因违反规定已被强制下架'
+                return
+              }
               this.bigImg = this.item.primaryImg
             } else {
               this.$notify.error(res.data.msg)

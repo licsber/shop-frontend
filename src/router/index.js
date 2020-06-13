@@ -9,6 +9,7 @@ import UserManager from '@/components/user/UserManager'
 import ItemManager from '@/components/item/ItemManager'
 import ItemShow from '@/components/item/ItemShow'
 import Admin from '@/components/admin/Admin'
+import Register from '@/components/Register'
 
 Vue.use(Router)
 
@@ -60,6 +61,11 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/reg',
+      name: 'Register',
+      component: Register
     },
     {
       path: '/item/:id',

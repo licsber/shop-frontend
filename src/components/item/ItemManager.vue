@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div v-if="items.length === 0"><br>您还没有商品发布哦</div>
     <div class="item_div" v-for="item in items" :key="item.id">
       <el-card>
         <img :src="item.primaryImg" alt="item.title" height="50px" style="float:left; padding-bottom: 10px">

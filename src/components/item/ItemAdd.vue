@@ -35,6 +35,11 @@
                   placeholder="商品展示下的小字 下面价格不填会进入免费送模式（拍卖）哦" maxlength="64" show-word-limit></el-input>
       </el-form-item>
 
+      <el-form-item label="自动发货信息" :label-width="formLabelWidth" prop="autoDelivery">
+        <el-input v-model="addForm.autoDelivery" autocomplete="off"
+                  placeholder="买家购买后 商品不会自动下架（显示售空） 而是自动发货 电子商品必填" maxlength="64" show-word-limit></el-input>
+      </el-form-item>
+
       <el-row>
         <el-col :span="8">
           <el-form-item label="定价" :label-width="formLabelWidth" prop="price">
@@ -100,6 +105,7 @@ export default {
         categoryName: '',
         type: '',
         subtitle: '',
+        autoDelivery: '',
         price: '',
         originPrice: '',
         postage: 0,
@@ -152,6 +158,7 @@ export default {
       this.addForm = {
         title: '',
         subtitle: '',
+        autoDelivery: '',
         price: '',
         originPrice: '',
         postage: 0,
@@ -169,6 +176,7 @@ export default {
         {
           title: this.addForm.title,
           subtitle: this.addForm.subtitle,
+          autoDelivery: this.addForm.autoDelivery,
           price: this.addForm.price,
           originPrice: this.addForm.originPrice,
           postage: this.addForm.postage,

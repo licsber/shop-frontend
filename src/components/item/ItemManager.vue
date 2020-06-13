@@ -23,7 +23,8 @@
           <el-divider direction="vertical" v-if="item.state === 1"></el-divider>
           <el-button type="info" v-if="item.state === 3" v-on:click="applyRePub(item)">申请发布</el-button>
           <el-button type="warning" v-if="item.state === 1" v-on:click="unPublish(item)">下架</el-button>
-          <el-button type="success" v-if="item.state === 2">发货</el-button>
+          <el-button type="success" v-if="item.state === 2" v-on:click="delivery(item)">发货</el-button>
+          <el-button type="success" v-if="item.state === 4" disabled>交易成功</el-button>
           <el-button type="primary" v-if="item.state === 0" v-on:click="rePublish(item)">重新上架</el-button>
           <el-divider direction="vertical"></el-divider>
           <el-button type="danger" v-on:click="delItem(item)">删除</el-button>
@@ -31,6 +32,21 @@
       </el-card>
       <br>
     </div>
+    <el-dialog
+      id="dialog"
+      title="发货信息"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :before-close="handleClose">
+      <span>电话： {{ deliveryInfo.tel }}</span><br>
+      <span>昵称： {{ deliveryInfo.nick }}</span><br>
+      <span>邮件： {{ deliveryInfo.mail }}</span><br>
+      <span>地址： {{ deliveryInfo.sellAddress + deliveryInfo.lastAddress}}</span>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+  </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -39,13 +55,49 @@ export default {
   name: 'ItemManager',
   data () {
     return {
-      items: []
+      items: [],
+      dialogVisible: false,
+      deliveryInfo: {
+        tel: '',
+        nick: '',
+        mail: '',
+        sellAddress: '',
+        lastAddress: ''
+      }
     }
   },
   mounted () {
     this.getUserItems()
   },
   methods: {
+    handleClose (done) {
+      this.$confirm('确认关闭？')
+    },
+    delivery (item) {
+      this.$axios.put('/delivery/' + item.id,
+        {},
+        {
+          headers: {userToken: this.$store.state.user.token}
+        }
+      )
+        .then(res => {
+          console.log(res.data)
+          if (res.data) {
+            if (res.data.code === 200) {
+              this.$notify.success(res.data.msg)
+              this.deliveryInfo = res.data.data
+              this.dialogVisible = true
+              this.getUserItems()
+            } else {
+              this.$notify.error(res.data.msg)
+            }
+          }
+        })
+        .catch(fail => {
+          this.$notify.error('用户登陆身份已过期')
+          this.$router.replace('/login?redirect=/itemManager')
+        })
+    },
     delItem (item) {
       this.$axios.put('/delItem/' + item.id,
         {},
@@ -155,5 +207,9 @@ export default {
     float: left;
     padding-top: 5px;
     padding-left: 10px
+  }
+
+  #dialog span {
+    font-size: 25px;
   }
 </style>

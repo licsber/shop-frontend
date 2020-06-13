@@ -10,6 +10,7 @@ import ItemManager from '@/components/item/ItemManager'
 import ItemShow from '@/components/item/ItemShow'
 import Admin from '@/components/admin/Admin'
 import Register from '@/components/Register'
+import ItemBuy from '@/components/item/ItemBuy'
 
 Vue.use(Router)
 
@@ -75,7 +76,18 @@ export default new Router({
     {
       path: '/admin',
       name: 'Admin',
-      component: Admin
+      component: Admin,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: '/itemBuy/:id',
+      name: 'ItemBuy',
+      component: ItemBuy,
+      meta: {
+        requireAuth: true
+      }
     }
   ]
 })

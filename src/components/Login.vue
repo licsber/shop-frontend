@@ -46,7 +46,7 @@ export default {
     return {
       loginForm: {
         tel: '18952188414',
-        password: '666',
+        password: '',
         remember: true
       }
     }

@@ -26,7 +26,7 @@
           <el-button type="success" v-if="item.state === 2">发货</el-button>
           <el-button type="primary" v-if="item.state === 0" v-on:click="rePublish(item)">重新上架</el-button>
           <el-divider direction="vertical"></el-divider>
-          <el-button type="danger">删除</el-button>
+          <el-button type="danger" v-on:click="delItem(item)">删除</el-button>
         </div>
       </el-card>
       <br>
@@ -46,6 +46,29 @@ export default {
     this.getUserItems()
   },
   methods: {
+    delItem (item) {
+      this.$axios.put('/delItem/' + item.id,
+        {},
+        {
+          headers: {userToken: this.$store.state.user.token}
+        }
+      )
+        .then(res => {
+          console.log(res.data)
+          if (res.data) {
+            if (res.data.code === 200) {
+              this.$notify.success(res.data.msg)
+              this.getUserItems()
+            } else {
+              this.$notify.error(res.data.msg)
+            }
+          }
+        })
+        .catch(fail => {
+          this.$notify.error('用户登陆身份已过期')
+          this.$router.replace('/login?redirect=/itemManager')
+        })
+    },
     rePublish (item) {
       this.$axios.put('/rePublishItem/' + item.id,
         {},
@@ -66,6 +89,7 @@ export default {
         })
         .catch(fail => {
           this.$notify.error('用户登陆身份已过期')
+          this.$router.replace('/login?redirect=/itemManager')
         })
     },
     unPublish (item) {
@@ -88,6 +112,7 @@ export default {
         })
         .catch(fail => {
           this.$notify.error('用户登陆身份已过期')
+          this.$router.replace('/login?redirect=/itemManager')
         })
     },
     applyRePub (item) {
@@ -114,6 +139,7 @@ export default {
         })
         .catch(fail => {
           this.$notify.error('用户登陆身份已过期')
+          this.$router.replace('/login?redirect=/itemManager')
         })
     }
   }

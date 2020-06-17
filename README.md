@@ -112,3 +112,9 @@ server {
     return 404;
 }
 ```
+
+## 参考
+
+前端部分主要参考了 【白卷】https://github.com/Antabot/White-Jotter
+
+后端为参考自己的项目【notice-java】编写

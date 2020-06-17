@@ -199,6 +199,10 @@ export default {
 </script>
 
 <style scoped>
+  a {
+    text-decoration: none;
+  }
+
   .item_div {
     margin: 0 100px 0 100px;
   }

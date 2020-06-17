@@ -15,7 +15,8 @@ Vue.use(Notifications)
 Vue.use(ElementUI)
 
 var axios = require('axios')
-axios.defaults.baseURL = 'http://localhost:8888/api/v1'
+// axios.defaults.baseURL = 'http://localhost:8888/api/v1'
+axios.defaults.baseURL = 'https://shop-api.licsber.site/api/v1'
 Vue.prototype.$axios = axios
 
 Vue.config.productionTip = false

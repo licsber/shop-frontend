@@ -2,7 +2,7 @@
   <el-upload
     class="mul-img-upload"
     ref="upload"
-    action="http://localhost:8888/api/v1/imgUpload"
+    action="https://shop-api.licsber.site/api/v1/imgUpload"
     :on-remove="handleRemove"
     :before-remove="beforeRemove"
     :on-success="handleSuccess"
